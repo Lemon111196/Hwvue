@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const RegisterContainer = styled.div`
     width: 400px;
-    border: 1px solid whitesmoke;
+    border: 1px solid #00CD00;
     backdrop-filter: blur(8px);
     box-shadow: 0 0 10px #00CD00 ;
     border-radius: 20px;
@@ -51,5 +51,9 @@ export const RegisterContainer = styled.div`
         position: absolute;
         top: 20px;
         right: 10px;
+        cursor: pointer;
+    }
+    .iconPassword{
+        color: white;
     }
 `;

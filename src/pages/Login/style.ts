@@ -50,5 +50,9 @@ export const LoginContainer = styled.div`
         position: absolute;
         top: 20px;
         right: 10px;
+        cursor: pointer;
+    }
+    .iconPassword{
+        color: white;
     }
 `;
