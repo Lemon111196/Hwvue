@@ -21,6 +21,9 @@ export default function Login() {
             color="success"
             label="Username"
             variant="filled"
+            InputLabelProps={{
+              style: { color: '#fff' },
+            }}
           ></TextField>
           <PersonIcon className="icon" />
         </div>
@@ -32,6 +35,9 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             label="Password"
             variant="filled"
+            InputLabelProps={{
+              style: { color: '#fff' },
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

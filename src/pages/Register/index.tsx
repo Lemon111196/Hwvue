@@ -28,6 +28,10 @@ export default function Register() {
                         id="filled-basic"
                         label="Username"
                         variant="filled"
+                        sx={{ input: { color: 'white' } }}
+                        InputLabelProps={{
+                            style: { color: '#fff' },
+                          }}
                     ></TextField>
                     <PersonIcon className="icon" />
                 </div>
@@ -40,6 +44,10 @@ export default function Register() {
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        sx={{ input: { color: 'white' } }}
+                        InputLabelProps={{
+                            style: { color: '#fff' },
+                          }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -61,6 +69,10 @@ export default function Register() {
                         type ={showConfirmPassword ? 'text' : 'password'}
                         value={ confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                        sx={{ input: { color: 'white' } }}
+                        InputLabelProps={{
+                            style: { color: '#fff' },
+                          }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
