@@ -1,6 +1,6 @@
 import { Button, Checkbox, FormControlLabel, IconButton, InputAdornment, TextField } from "@mui/material";
 import { LoginContainer } from "./style";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState } from "react";
@@ -9,6 +9,10 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 export default function Login() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const goToDashboard = () => {
+    navigate('/dashboard')
+  }
   const toggleBtn = () => {
     setShowPassword(!showPassword);
   };
@@ -21,6 +25,7 @@ export default function Login() {
             color="success"
             label="Username"
             variant="filled"
+            sx={{ input: { color: 'white' } }}
             InputLabelProps={{
               style: { color: '#fff' },
             }}
@@ -35,6 +40,7 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             label="Password"
             variant="filled"
+            sx={{ input: { color: 'white' } }}
             InputLabelProps={{
               style: { color: '#fff' },
             }}
@@ -51,13 +57,14 @@ export default function Login() {
         </div>
         <div>
           <div className="checkbox">
-            <FormControlLabel control={<Checkbox />} label="Remember me" />
+            <FormControlLabel control={<Checkbox sx={{color: "white"}}  color="success"/>} label="Remember me" />
             <p><Link className="link" to='/register'>Forgot Password? </Link></p>
           </div>
           <Button color="secondary"
             type="submit"
             variant="contained"
             className="btn"
+            onClick={goToDashboard}
           >Login</Button>
         </div>
         <p className="register">Don't you have an account?<Link className="link" to='/register'>Register</Link></p>
