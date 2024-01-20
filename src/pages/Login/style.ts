@@ -10,6 +10,7 @@ export const LoginContainer = styled.div`
     justify-content: center;
     position: absolute;
     top: 200px;
+    color: white;   
     h1{
         margin-top: 30px;
         text-align:center;
@@ -47,6 +48,7 @@ export const LoginContainer = styled.div`
         font-weight: bold;
     }
     .icon{
+        color: white;
         position: absolute;
         top: 20px;
         right: 10px;

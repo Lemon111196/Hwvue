@@ -57,7 +57,7 @@ export default function Login() {
         </div>
         <div>
           <div className="checkbox">
-            <FormControlLabel control={<Checkbox sx={{color: "white"}}  color="success"/>} label="Remember me" />
+            <FormControlLabel control={<Checkbox sx={{color: "white"}}  color="secondary"/>} label="Remember me" />
             <p><Link className="link" to='/register'>Forgot Password? </Link></p>
           </div>
           <Button color="secondary"
@@ -67,7 +67,7 @@ export default function Login() {
             onClick={goToDashboard}
           >Login</Button>
         </div>
-        <p className="register">Don't you have an account?<Link className="link" to='/register'>Register</Link></p>
+        <p className="register">Don't you have an account?<Link className="link" to='/auth/register'>Register</Link></p>
       </div>
     </LoginContainer>
   )

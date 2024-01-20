@@ -10,6 +10,7 @@ export const RegisterContainer = styled.div`
     justify-content: center;
     position: absolute;
     top: 200px;
+    color: white;
     h1{
         margin-top: 30px;
         text-align:center;
