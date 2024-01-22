@@ -4,10 +4,10 @@ import { MainLayoutContainer } from "./style";
 export default function MainLayout() {
   return (
     <MainLayoutContainer>
-      <Outlet />
       <div className="nav">
         <Navbar />
       </div>
+      <Outlet />
     </MainLayoutContainer>
   )
 }

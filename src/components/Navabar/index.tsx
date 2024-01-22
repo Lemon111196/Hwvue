@@ -2,24 +2,38 @@ import { Avatar} from "@mui/material"
 import { NavbarContainer } from "./style"
 import img from '../../assets/img/Kansei_Migate.webp'
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 function Navbar() {
     const [navTitle, setNavTitle] = useState<String>('')
     const { pathname } = useLocation();
     const [profile, setProfile] = useState<boolean>(false);
+    const navigate = useNavigate();
+
+    const gotoDashboard = () => {
+      navigate ('/')
+    }
+    const gotoNote = () => {
+      navigate ('/noteapp')
+    }
+    const gotoLinkcard = () => {
+      navigate ('/linkcard')
+    }
     useEffect(() => {
         getNavTitle()
     }, [pathname]);
     const getNavTitle = () => {
         switch (pathname) {
             case "/linkcard":
-                setNavTitle("Link Card");
+                setNavTitle("Linkcard");
                 break
             case "/":
                 setNavTitle("Dashboard");
                 break
-            case "/todo":
+            case "/noteapp":
                 setNavTitle("Note");
+                break;
+            default:
+                setNavTitle("");
         }
     }
 
@@ -37,8 +51,9 @@ function Navbar() {
                 <h2>{navTitle}</h2>
                 <div>
                     <ul className="navList">
-                        <li className="navItem">Note App</li>
-                        <li className="navItem">Linkcard</li>
+                        <li onClick={gotoDashboard} className="navItem">Dashboard</li>
+                        <li onClick={gotoNote} className="navItem">Note App</li>
+                        <li onClick={gotoLinkcard} className="navItem">Linkcard</li>
                     </ul>
                 </div>
                 </div>

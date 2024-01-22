@@ -33,7 +33,18 @@ export default function Register() {
               style: { color: '#fff' },
             }}
           ></TextField>
-          <PersonIcon className="icon" />
+        </div>
+        <div className="inputForm">
+          <TextField className="input"
+            color="success" 
+            id="filled-basic"
+            label="Name"
+            variant="filled"
+            sx={{ input: { color: 'white' } }}
+            InputLabelProps={{
+              style: { color: '#fff' },
+            }}
+          ></TextField>
         </div>
         <div className="inputForm">
           <TextField className="input"

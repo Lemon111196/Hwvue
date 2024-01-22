@@ -11,7 +11,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const goToDashboard = () => {
-    navigate('/dashboard')
+    navigate('/')
   }
   const toggleBtn = () => {
     setShowPassword(!showPassword);
