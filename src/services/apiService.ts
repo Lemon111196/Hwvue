@@ -1,40 +1,36 @@
-import axios from "axios";
+import axios, {
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 
-const apiService = axios.create({
-  baseURL: 'http://localhost:5173/',
+const apiService: AxiosInstance = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com",
   timeout: 90000,
-});// Add a request interceptor
-const defaultHeader = {
-  Accept: "application/json",
-  "Content-Type": "application/x-www-form-urlencoded",
-}
-
-apiService.interceptors.request.use((
-  config) => {
-  let accessToken = `Bearer ${localStorage["token"]}`;
-  if (localStorage["token"]) {
-    // token = localStorage["token"];
-    config.headers = {
-      ...defaultHeader,
-      authorization: accessToken,
-    };
-  } else {
-    // console.log(token);
-    config.headers = {
-      ...defaultHeader,
-    };
-  }
-  return config;
-},
-  (error) => {
-    return Promise.reject(error);
-  });
-
-
-apiService.interceptors.response.use((response) => {
-  return response;
-}, (error) => {
-  return Promise.reject(error);
 });
 
-export default apiService
+apiService.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    config.headers["Accept"] = "application/json";
+    const accessToken = `Bearer ${localStorage["token"]}`;
+    if (localStorage["token"]) {
+      config.headers["authorization"] = accessToken;
+    }
+    console.log('config', config)
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+apiService.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export default apiService;
