@@ -1,10 +1,33 @@
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { RegisterContainer } from "./style";
 import { Link } from "react-router-dom";
-import PersonIcon from '@mui/icons-material/Person';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useState } from "react";
+import * as yup from 'yup';
+import { passwordRegex } from "../../services/regex";
+import { useForm } from "react-hook-form";
+import { IForm } from "./interface";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+
+
+const schema = yup.object().shape({
+  username: yup.string()
+    .required('Username is required')
+    .max(20, 'Username must be at most 20 characters'),
+  name: yup.string()
+    .required('Name is required')
+    .max(20, 'Name must be at most 20 characters'),
+  password: yup.string()
+    .required('Password is required')
+    .matches(passwordRegex, 'Password is not valid')
+    .min(8, 'Password must be at least 8 characters'),
+  confirmPassword: yup.string()
+    .oneOf([yup.ref('password'), undefined], 'Passwords must match')
+    .required('Confirm Password is required')
+    .matches(passwordRegex, 'Password is not valid').min(8, 'Password must be at least 8 characters'),
+})
 
 export default function Register() {
   const [password, setPassword] = useState('');
@@ -12,6 +35,9 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
+  const { register, handleSubmit, formState } = useForm<IForm>({
+    resolver: yupResolver(schema),
+  });
   const toggleBtn = () => {
     setShowPassword(!showPassword);
   }
@@ -24,6 +50,7 @@ export default function Register() {
         <h1>Sign up</h1>
         <div className="inputForm">
           <TextField className="input"
+            {...register("username")}
             color="success"
             id="filled-basic"
             label="Username"
@@ -36,7 +63,8 @@ export default function Register() {
         </div>
         <div className="inputForm">
           <TextField className="input"
-            color="success" 
+
+            color="success"
             id="filled-basic"
             label="Name"
             variant="filled"
@@ -48,6 +76,7 @@ export default function Register() {
         </div>
         <div className="inputForm">
           <TextField className="input"
+
             color="success"
             id="filled-basic"
             label="Password"

@@ -5,12 +5,24 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState } from "react";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { apiService } from "../../services";
+import { toast } from "react-toastify";
+// import { IForm } from "./interface";
 
 export default function Login() {
+  // const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
-  const goToDashboard = () => {
+  const goToDashboard = async () => {
+    try{
+      const response = await apiService.get('/auth/login')
+      if(response.status === 200){
+        // setForm(response.data)
+      }
+    }catch(error){
+      toast.error("Login Failed");
+    }
     navigate('/')
   }
   const toggleBtn = () => {

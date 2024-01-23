@@ -1,3 +1,3 @@
-import apiService from './axios'
+import apiService from './apiService'
 
 export {apiService} 
