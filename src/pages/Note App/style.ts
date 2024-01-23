@@ -8,7 +8,7 @@ export const NoteContainer = styled.div`
         border: 1px solid #778899;
         border-top: none;
         height: 100vh;
-        margin-right: 50px;
+        margin-right: 30px;
     }
     .text{
         margin: 15px;
@@ -28,5 +28,13 @@ export const NoteContainer = styled.div`
         margin-left: 15px;
         margin-top: 20px;
         width: 350px;
+    }
+    .card{
+        width: 350px;
+        padding: 5px;
+    }
+    .head{
+        display: flex;
+        justify-content: space-between;
     }
 `;
