@@ -1,14 +1,15 @@
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { RegisterContainer } from "./style";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { ChangeEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import { IForm } from "./interface";
 import { toast } from "react-toastify";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { schema } from "./schema";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { apiService } from "../../services";
 
 
 
@@ -17,44 +18,43 @@ export default function Register() {
     username: '',
     name: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   }
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(schema),
-    defaultValues: formDefaultValues,
+    defaultValues: formDefaultValues
   })
+  const { id } = useParams();
+  const navigate = useNavigate()
+  // useEffect(() => {
+  //   createAccount()
+  // }, [id])
 
-  const [registerForm, setRegisterForm] = useState<IForm>({
-    username: '',
-    name: '',
-    password: '',
-    confirmPassword: ''
-  })
-
+  // const [registerForm, setRegisterForm] = useState<IForm>({
+  //   username: '',
+  //   name: '',
+  //   password: '',
+  //   confirmPassword: '',
+  // })
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
-  const handleRegisterForm = (e: ChangeEvent<HTMLInputElement>) => {
-    setRegisterForm({
-      ...registerForm,
-      [e.target?.name]: e.target.value
-    })
-  }
-  
-  const submitForm:  = (data) =>{
-    console.log(data);
-  }
 
-  //!Create a new account~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const createAccount:SubmitHandler<IForm> = async (e: any,  data) => {
-    e.preventDefault();
+  //!Create a new account~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const createAccount: SubmitHandler<IForm> = async (data) => {
     console.log(data);
-    if (registerForm.password !== registerForm.confirmPassword) {
-      toast.error('Password do not match')
-      return;
+    try {
+      const response = await apiService.post(`/auth/register`, data)
+      if (response.status === 200) {  
+        toast.success('Account registered successfully');
+        navigate('auth/login')
+      }
+    } catch (error) {
+      toast.error('Error registering account');
     }
   }
 
@@ -66,101 +66,121 @@ export default function Register() {
   }
   return (
     <RegisterContainer>
-      <div>
+      <div className="form-wrapper">
         <h1>Sign up</h1>
         <div className="inputForm">
-          <TextField className="input"
-            {...register("username")}
+          <Controller
+            control={control}
             name="username"
-            value={registerForm.username}
-            color="success"
-            id="filled-basic"
-            label="Username"
-            variant="filled"
-            sx={{ input: { color: 'white' } }}
-            InputLabelProps={{
-              style: { color: '#fff' },
-            }}
-            onChange={handleRegisterForm}
-          ></TextField>
+            render={({ field }) =>
+              <TextField
+                {...field}
+                className="input"
+                {...register("username")}
+                name="username"
+                color="success"
+                id="filled-basic"
+                label="Username"
+                variant="filled"
+                sx={{ input: { color: 'white' } }}
+                InputLabelProps={{
+                  style: { color: '#fff' },
+                }}
+              />}
+          />
           {errors.username && (
             <span className="error">{errors?.username?.message?.toString()}</span>
           )}
         </div>
         <div className="inputForm">
-          <TextField className="input"
-            {...register("name")}
-            value={registerForm.name}
+          <Controller
+            control={control}
             name="name"
-            color="success"
-            id="filled-basic"
-            label="Name"
-            variant="filled"
-            sx={{ input: { color: 'white' } }}
-            InputLabelProps={{
-              style: { color: '#fff' },
-            }}
-            onChange={handleRegisterForm}
-          ></TextField>
+            render={({ field }) =>
+              <TextField
+                className="input"
+                {...field}
+                {...register("name")}
+                name="name"
+                color="success"
+                id="filled-basic"
+                label="Name"
+                variant="filled"
+                sx={{ input: { color: 'white' } }}
+                InputLabelProps={{
+                  style: { color: '#fff' },
+                }}
+              />}
+          />
           {errors.name && (
             <span className="error">{errors?.name?.message?.toString()}</span>
           )}
         </div>
         <div className="inputForm">
-          <TextField className="input"
-            {...register("password")}
+          <Controller
+            control={control}
             name="password"
-            color="success"
-            id="filled-basic"
-            label="Password"
-            variant="filled"
-            type={showPassword ? 'text' : 'password'}
-            value={registerForm.password}
-            onChange={handleRegisterForm}
-            sx={{ input: { color: 'white' } }}
-            InputLabelProps={{
-              style: { color: '#fff' },
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={toggleBtn} edge="end">
-                    {showPassword ? <VisibilityIcon className="iconPassword" /> : <VisibilityOffIcon className="iconPassword" />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          ></TextField>
+            render={({ field }) =>
+              <TextField
+                className="input"
+                {...field}
+                {...register("password")}
+                name="password"
+                color="success"
+                id="filled-basic"
+                label="Password"
+                variant="filled"
+                type={showPassword ? 'text' : 'password'}
+                sx={{ input: { color: 'white' } }}
+                InputLabelProps={{
+                  style: { color: '#fff' },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={toggleBtn} edge="end">
+                        {showPassword ? <VisibilityIcon className="iconPassword" /> : <VisibilityOffIcon className="iconPassword" />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />}
+          />
           {errors.password && (
             <span className="error">{errors?.password?.message?.toString()}</span>
           )}
         </div>
         <div className="inputForm">
-          <TextField className="input"
-            {...register("confirmPassword")}
+          <Controller
+            control={control}
             name="confirmPassword"
-            inputProps={{ style: { color: `white` } }}
-            color="success"
-            id="filled-basic"
-            label="Confirm Password"
-            variant="filled"
-            type={showConfirmPassword ? 'text' : 'password'}
-            value={registerForm.confirmPassword}
-            onChange={handleRegisterForm}
-            sx={{ input: { color: 'white' } }}
-            InputLabelProps={{
-              style: { color: '#fff' },
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={toggleBtnConfirm} edge="end">
-                    {showConfirmPassword ? <VisibilityIcon className="iconPassword" /> : <VisibilityOffIcon className="iconPassword" />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          ></TextField>
+            render={({ field }) =>
+              <TextField
+                className="input"
+                {...field}
+                {...register("confirmPassword")}
+                name="confirmPassword"
+                inputProps={{ style: { color: `white` } }}
+                color="success"
+                id="filled-basic"
+                label="Confirm Password"
+                variant="filled"
+                type={showConfirmPassword ? 'text' : 'password'}
+                sx={{ input: { color: 'white' } }}
+                InputLabelProps={{
+                  style: { color: '#fff' },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={toggleBtnConfirm} edge="end">
+                        {showConfirmPassword ? <VisibilityIcon className="iconPassword" /> : <VisibilityOffIcon className="iconPassword" />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />}
+          />
           {errors.confirmPassword && (
             <span className="error">{errors?.confirmPassword?.message?.toString()}</span>
           )}

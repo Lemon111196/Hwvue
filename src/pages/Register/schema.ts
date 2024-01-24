@@ -8,7 +8,7 @@ export const schema = yup.object().shape({
         .max(20, 'Name must be at most 20 characters'),
     password: yup.string()
         .required('Password is required')
-        .min(8, 'Password must be at least 8 characters'),
+        .min(3, 'Password must be at least 3 characters'),
     confirmPassword: yup.string()
         .oneOf([yup.ref('password'), undefined], 'Passwords must match')
         .required('Confirm Password is required')

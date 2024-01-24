@@ -9,8 +9,12 @@ export const RegisterContainer = styled.div`
     display: flex;
     justify-content: center;
     position: absolute;
-    top: 200px;
+    top: 150px;
     color: white;
+    .form-wrapper{
+        width: 100%;
+        padding: 30px;
+    }
     h1{
         margin-top: 30px;
         text-align:center;
@@ -26,6 +30,8 @@ export const RegisterContainer = styled.div`
     .inputForm{
         margin-top: 10px;
         position: relative;
+        display: flex;
+        flex-direction: column;
     }
     .checkbox{
         display:flex;
@@ -56,5 +62,8 @@ export const RegisterContainer = styled.div`
     }
     .iconPassword{
         color: white;
+    }
+    .inputForm .error{
+      color: red;
     }
 `;
