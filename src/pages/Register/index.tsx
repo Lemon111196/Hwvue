@@ -4,42 +4,39 @@ import { Link } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ChangeEvent, useState } from "react";
-import * as yup from 'yup';
-import { passwordRegex } from "../../services/regex";
 import { IForm } from "./interface";
 import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { schema } from "./schema";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-const schema = yup.object().shape({
-  username: yup.string()
-    .required('Username is required')
-    .max(20, 'Username must be at most 20 characters'),
-  name: yup.string()
-    .required('Name is required')
-    .max(20, 'Name must be at most 20 characters'),
-  password: yup.string()
-    .required('Password is required')
-    .matches(passwordRegex, 'Password is not valid')
-    .min(8, 'Password must be at least 8 characters'),
-  confirmPassword: yup.string()
-    .oneOf([yup.ref('password'), undefined], 'Passwords must match')
-    .required('Confirm Password is required')
-    .matches(passwordRegex, 'Password is not valid').min(8, 'Password must be at least 8 characters'),
-})
+
 
 export default function Register() {
-  const [register, setRegister] = useState<IForm>({
+  const formDefaultValues = {
+    username: '',
+    name: '',
+    password: '',
+    confirmPassword: ''
+  }
+  const {
+    register,
+    formState: { errors },
+  } = useForm<any>({
+    resolver: yupResolver(schema),
+    defaultValues: formDefaultValues,
+  })
+
+  const [registerForm, setRegisterForm] = useState<IForm>({
     username: '',
     name: '',
     password: '',
     confirmPassword: ''
   })
-  const [alert, setAlert] = useState(null);
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
-
-  const [registerForm, setRegisterForm] = useState<IForm[]>([]);
-
-  const handleRegisterForm = (e:ChangeEvent<HTMLInputElement>) => {
+  const handleRegisterForm = (e: ChangeEvent<HTMLInputElement>) => {
     setRegisterForm({
       ...registerForm,
       [e.target?.name]: e.target.value
@@ -47,9 +44,9 @@ export default function Register() {
   }
 
   //!Create a new account~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const createAccount = async (e:any) => {
+  const createAccount = async (e: any) => {
     e.preventDefault();
-    if(register.password !== register.confirmPassword){
+    if (registerForm.password !== registerForm.confirmPassword) {
       toast.error('Password do not match')
       return;
     }
@@ -67,8 +64,9 @@ export default function Register() {
         <h1>Sign up</h1>
         <div className="inputForm">
           <TextField className="input"
+            {...register("username")}
             name="username"
-            value={register.username}
+            value={registerForm.username}
             color="success"
             id="filled-basic"
             label="Username"
@@ -79,10 +77,14 @@ export default function Register() {
             }}
             onChange={handleRegisterForm}
           ></TextField>
+          {errors.username && (
+            <span className="error">{errors?.username?.message?.toString()}</span>
+          )}
         </div>
         <div className="inputForm">
           <TextField className="input"
-          value={register.name}
+            {...register("name")}
+            value={registerForm.name}
             name="name"
             color="success"
             id="filled-basic"
@@ -94,16 +96,20 @@ export default function Register() {
             }}
             onChange={handleRegisterForm}
           ></TextField>
+          {errors.name && (
+            <span className="error">{errors?.name?.message?.toString()}</span>
+          )}
         </div>
         <div className="inputForm">
           <TextField className="input"
+            {...register("password")}
             name="password"
             color="success"
             id="filled-basic"
             label="Password"
             variant="filled"
             type={showPassword ? 'text' : 'password'}
-            value={register.password}
+            value={registerForm.password}
             onChange={handleRegisterForm}
             sx={{ input: { color: 'white' } }}
             InputLabelProps={{
@@ -119,9 +125,13 @@ export default function Register() {
               ),
             }}
           ></TextField>
+          {errors.password && (
+            <span className="error">{errors?.password?.message?.toString()}</span>
+          )}
         </div>
         <div className="inputForm">
           <TextField className="input"
+            {...register("confirmPassword")}
             name="confirmPassword"
             inputProps={{ style: { color: `white` } }}
             color="success"
@@ -129,7 +139,7 @@ export default function Register() {
             label="Confirm Password"
             variant="filled"
             type={showConfirmPassword ? 'text' : 'password'}
-            value={register.confirmPassword}
+            value={registerForm.confirmPassword}
             onChange={handleRegisterForm}
             sx={{ input: { color: 'white' } }}
             InputLabelProps={{
@@ -145,9 +155,12 @@ export default function Register() {
               ),
             }}
           ></TextField>
+          {errors.confirmPassword && (
+            <span className="error">{errors?.confirmPassword?.message?.toString()}</span>
+          )}
         </div>
         <div>
-          <Button 
+          <Button
             onClick={createAccount}
             color="secondary"
             type="submit"
