@@ -3,7 +3,7 @@ import { RegisterContainer } from "./style";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IForm } from "./interface";
 import { toast } from "react-toastify";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";

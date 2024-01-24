@@ -11,7 +11,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
 import { IForm } from "./interface";
-// import { IForm } from "./interface";
 
 export default function Login() {
   const formDefaultValues = {
@@ -27,7 +26,6 @@ export default function Login() {
     defaultValues: formDefaultValues
   })
 
-  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -37,16 +35,12 @@ export default function Login() {
     try {
       const response = await apiService.post(`/auth/login`, data);
       console.log(response);
-      if (response.status === 200 || response.status === 201) {
+      if (response.status === 200) {
         toast.success('Account logging in successfully');
         localStorage.setItem('token', response.data.accessToken);
-        navigate('/'); 
-      } else {
-        console.error('Unexpected response status:', response.status);
-        toast.error('Error logging in. Please try again.');
+        navigate('/');
       }
     } catch (error) {
-      console.error('Error logging in:', error);
       toast.error('Error logging in. Please try again.');
     }
   }
@@ -90,8 +84,6 @@ export default function Login() {
                 {...field}
                 color="success"
                 type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 label="Password"
                 variant="filled"
                 sx={{ input: { color: 'white' } }}
