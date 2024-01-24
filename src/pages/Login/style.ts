@@ -57,4 +57,11 @@ export const LoginContainer = styled.div`
     .iconPassword{
         color: white;
     }
+    .form-wrapper{
+        width: 100%;
+        padding: 30px;
+    }
+    .error{ 
+        color: red;
+    }
 `;

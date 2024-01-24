@@ -7,24 +7,50 @@ import { useState } from "react";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { apiService } from "../../services";
 import { toast } from "react-toastify";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./schema";
+import { IForm } from "./interface";
 // import { IForm } from "./interface";
 
 export default function Login() {
-  // const [username, setUsername] = useState('');
+  const formDefaultValues = {
+    username: '',
+    password: '',
+  }
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<any>({
+    resolver: yupResolver(schema),
+    defaultValues: formDefaultValues
+  })
+
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
-  const goToDashboard = async () => {
-    try{
-      const response = await apiService.get('/auth/login')
-      if(response.status === 200){
-        // setForm(response.data)
+
+  //! Logging in
+  const gotoDashboard: SubmitHandler<IForm> = async (data) => {
+    console.log(data);
+    try {
+      const response = await apiService.post(`/auth/login`, data);
+      console.log(response);
+      if (response.status === 200 || response.status === 201) {
+        toast.success('Account logging in successfully');
+        localStorage.setItem('token', response.data.accessToken);
+        navigate('/'); 
+      } else {
+        console.error('Unexpected response status:', response.status);
+        toast.error('Error logging in. Please try again.');
       }
-    }catch(error){
-      toast.error("Login Failed");
+    } catch (error) {
+      console.error('Error logging in:', error);
+      toast.error('Error logging in. Please try again.');
     }
-    navigate('/')
   }
+
   const toggleBtn = () => {
     setShowPassword(!showPassword);
   };
@@ -33,50 +59,70 @@ export default function Login() {
       <div>
         <h1>Login</h1>
         <div className="inputForm">
-          <TextField className="input"
-            color="success"
-            label="Username"
-            variant="filled"
-            sx={{ input: { color: 'white' } }}
-            InputLabelProps={{
-              style: { color: '#fff' },
-            }}
-          ></TextField>
+          <Controller
+            control={control}
+            name="username"
+            render={({ field }) =>
+              <TextField
+                className="input"
+                {...field}
+                color="success"
+                label="Username"
+                variant="filled"
+                sx={{ input: { color: 'white' } }}
+                InputLabelProps={{
+                  style: { color: '#fff' },
+                }}
+              />}
+          />
           <PersonIcon className="icon" />
         </div>
+        {errors.username && (
+          <span className="error">{errors?.username?.message?.toString()}</span>
+        )}
         <div className="inputForm">
-          <TextField className="input"
-            color="success"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            label="Password"
-            variant="filled"
-            sx={{ input: { color: 'white' } }}
-            InputLabelProps={{
-              style: { color: '#fff' },
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={toggleBtn} edge="end">
-                    {showPassword ? <VisibilityIcon className="iconPassword"/> : <VisibilityOffIcon className="iconPassword" />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          ></TextField>
+          <Controller
+            control={control}
+            name="password"
+            render={({ field }) =>
+              <TextField
+                className="input"
+                {...field}
+                color="success"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                label="Password"
+                variant="filled"
+                sx={{ input: { color: 'white' } }}
+                InputLabelProps={{
+                  style: { color: '#fff' },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={toggleBtn} edge="end">
+                        {showPassword ? <VisibilityIcon className="iconPassword" /> : <VisibilityOffIcon className="iconPassword" />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />}
+          />
         </div>
+        {errors.password && (
+          <span className="error">{errors?.password?.message?.toString()}</span>
+        )}
         <div>
           <div className="checkbox">
-            <FormControlLabel control={<Checkbox sx={{color: "white"}}  color="secondary"/>} label="Remember me" />
+            <FormControlLabel control={<Checkbox sx={{ color: "white" }} color="secondary" />} label="Remember me" />
             <p><Link className="link" to='/auth/register'>Forgot Password? </Link></p>
           </div>
           <Button color="secondary"
             type="submit"
             variant="contained"
             className="btn"
-            onClick={goToDashboard}
+            onClick={handleSubmit(gotoDashboard)}
           >Login</Button>
         </div>
         <p className="register">Don't you have an account?<Link className="link" to='/auth/register'>Register</Link></p>

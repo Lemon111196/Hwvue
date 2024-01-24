@@ -21,7 +21,6 @@ export default function Register() {
     confirmPassword: '',
   }
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
@@ -29,18 +28,7 @@ export default function Register() {
     resolver: yupResolver(schema),
     defaultValues: formDefaultValues
   })
-  const { id } = useParams();
   const navigate = useNavigate()
-  // useEffect(() => {
-  //   createAccount()
-  // }, [id])
-
-  // const [registerForm, setRegisterForm] = useState<IForm>({
-  //   username: '',
-  //   name: '',
-  //   password: '',
-  //   confirmPassword: '',
-  // })
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
@@ -49,9 +37,10 @@ export default function Register() {
     console.log(data);
     try {
       const response = await apiService.post(`/auth/register`, data)
-      if (response.status === 200) {  
+      // console.log('check' , response);
+      if (response.status === 201) {  
         toast.success('Account registered successfully');
-        navigate('auth/login')
+        navigate('/auth/login')
       }
     } catch (error) {
       toast.error('Error registering account');
@@ -76,7 +65,6 @@ export default function Register() {
               <TextField
                 {...field}
                 className="input"
-                {...register("username")}
                 name="username"
                 color="success"
                 id="filled-basic"
@@ -100,7 +88,6 @@ export default function Register() {
               <TextField
                 className="input"
                 {...field}
-                {...register("name")}
                 name="name"
                 color="success"
                 id="filled-basic"
@@ -124,7 +111,6 @@ export default function Register() {
               <TextField
                 className="input"
                 {...field}
-                {...register("password")}
                 name="password"
                 color="success"
                 id="filled-basic"
@@ -158,7 +144,6 @@ export default function Register() {
               <TextField
                 className="input"
                 {...field}
-                {...register("confirmPassword")}
                 name="confirmPassword"
                 inputProps={{ style: { color: `white` } }}
                 color="success"
