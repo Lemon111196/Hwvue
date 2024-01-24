@@ -6,7 +6,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ChangeEvent, useState } from "react";
 import { IForm } from "./interface";
 import { toast } from "react-toastify";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { schema } from "./schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -21,6 +21,7 @@ export default function Register() {
   }
   const {
     register,
+    handleSubmit,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(schema),
@@ -42,10 +43,15 @@ export default function Register() {
       [e.target?.name]: e.target.value
     })
   }
+  
+  const submitForm:  = (data) =>{
+    console.log(data);
+  }
 
   //!Create a new account~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const createAccount = async (e: any) => {
+  const createAccount:SubmitHandler<IForm> = async (e: any,  data) => {
     e.preventDefault();
+    console.log(data);
     if (registerForm.password !== registerForm.confirmPassword) {
       toast.error('Password do not match')
       return;
@@ -161,7 +167,7 @@ export default function Register() {
         </div>
         <div>
           <Button
-            onClick={createAccount}
+            onClick={handleSubmit(createAccount)}
             color="secondary"
             type="submit"
             variant="contained"
