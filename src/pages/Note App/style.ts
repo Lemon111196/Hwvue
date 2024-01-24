@@ -14,6 +14,7 @@ export const NoteContainer = styled.div`
         margin: 15px;
         width: 350px;
     }
+
     .createNote p{
         margin-left: 15px;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -36,5 +37,11 @@ export const NoteContainer = styled.div`
     .head{
         display: flex;
         justify-content: space-between;
+    }
+    .edit{
+        color: orange;
+    }
+    .delete{
+        color:red;
     }
 `;

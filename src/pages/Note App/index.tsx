@@ -3,12 +3,28 @@ import { NoteContainer } from "./style";
 import { useState } from "react";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { IForm } from "./interface";
 export default function Note() {
   const [status, setStatus] = useState('')
+  const [form, setForm] = useState<IForm>()
   const handleChange = (e: SelectChangeEvent) => {
     setStatus(e.target.value);
   }
+  const createNoteCard = () => {
 
+  }
+  const getCardClassName = () => {
+    switch (status) {
+      case '10':
+        return 'Normal';
+      case '20':
+        return 'Important';
+      case '30':
+        return 'Highlight';
+      default:
+        return '';
+    }
+  }
 
   return (
     <NoteContainer>
@@ -40,15 +56,17 @@ export default function Note() {
         </div>
         <Button
           className="CreateBtn"
-          variant="outlined">Create</Button>
+          variant="outlined"
+          onClick={createNoteCard}
+        >Create</Button>
       </div>
       <div className="note">
-        <Card className="card">
+        <Card className={`card${getCardClassName()}`}>
           <div className="head">
             <h3>Alo</h3>
             <div className="icon">
-              <ModeEditOutlineIcon className="edit"/>
-              <DeleteIcon className="delete"/>
+              <ModeEditOutlineIcon className="edit" />
+              <DeleteIcon className="delete" />
             </div>
           </div>
           <p>status</p>

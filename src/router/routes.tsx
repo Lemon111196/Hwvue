@@ -5,6 +5,7 @@ import Linkcard from "../pages/Linkcard";
 import Login from "../pages/Login";
 import Note from "../pages/Note App";
 import Register from "../pages/Register";
+import ProtectedRouter from "./protectedRoutes";
 
 const routes = [
     {
@@ -13,15 +14,15 @@ const routes = [
         children: [
             {
                 path:'',
-                element: <Dashboard />
+                element: <ProtectedRouter component={Dashboard} />
             },
             {
                 path: 'noteapp',
-                element: <Note/>
+                element: <ProtectedRouter component={Note} />
             },
             {
                 path: 'linkcard',
-                element: <Linkcard/>
+                element: <ProtectedRouter component={Linkcard} />
             }
         ]
     },

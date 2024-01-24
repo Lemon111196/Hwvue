@@ -70,7 +70,7 @@ export default function Login() {
         <div>
           <div className="checkbox">
             <FormControlLabel control={<Checkbox sx={{color: "white"}}  color="secondary"/>} label="Remember me" />
-            <p><Link className="link" to='/register'>Forgot Password? </Link></p>
+            <p><Link className="link" to='/auth/register'>Forgot Password? </Link></p>
           </div>
           <Button color="secondary"
             type="submit"

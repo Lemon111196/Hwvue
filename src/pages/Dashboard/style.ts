@@ -22,15 +22,18 @@ export const DashboardContainer = styled.div`
         display:flex;
         flex-direction: column;
         font-weight: 800;
-        margin-right: 20px;
+        align-items: center;
+        margin-right: 40px;
     }
     .createLinkcard{
         display:flex;
         flex-direction: column;
         font-weight: 800;
+        align-items: center;
     }
     img{
-        width: 350px;
-        height: 350px;
+        width: 300px;
+        height: 300px;
     }
+
 `;
