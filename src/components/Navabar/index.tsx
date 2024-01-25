@@ -9,6 +9,10 @@ function Navbar() {
     const [profile, setProfile] = useState<boolean>(false);
     const navigate = useNavigate();
 
+    const logout = () => {
+        navigate('/auth/login')
+    }
+
     const gotoDashboard = () => {
       navigate ('/')
     }
@@ -64,7 +68,7 @@ function Navbar() {
             <div >
                 <ul className="list">
                     <li className="profile">Profile</li>
-                    <li className="profile">Log out</li>
+                    <li onClick={logout} className="profile">Log out</li>
                 </ul>
             </div>
             )}

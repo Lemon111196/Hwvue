@@ -4,3 +4,4 @@ export interface IForm{
     status: 'normal',
     content: string,
 }
+

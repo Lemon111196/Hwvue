@@ -11,6 +11,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
 import { IForm } from "./interface";
+// import { IForm } from "./interface";
 
 export default function Login() {
   const formDefaultValues = {
@@ -26,6 +27,7 @@ export default function Login() {
     defaultValues: formDefaultValues
   })
 
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -35,10 +37,12 @@ export default function Login() {
     try {
       const response = await apiService.post(`/auth/login`, data);
       console.log(response);
-      if (response.status === 200) {
+      if (response.status === 200 ) {
         toast.success('Account logging in successfully');
         localStorage.setItem('token', response.data.accessToken);
-        navigate('/');
+        navigate('/'); 
+      } else {
+        toast.error('Error logging in. Please try again.');
       }
     } catch (error) {
       toast.error('Error logging in. Please try again.');

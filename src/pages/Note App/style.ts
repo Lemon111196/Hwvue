@@ -8,7 +8,8 @@ export const NoteContainer = styled.div`
         border: 1px solid #778899;
         border-top: none;
         height: 100vh;
-        margin-right: 30px;
+        margin-right: 30px; 
+        padding: 10px;
     }
     .text{
         margin: 15px;
@@ -33,6 +34,8 @@ export const NoteContainer = styled.div`
     .card{
         width: 350px;
         padding: 5px;
+        margin-top: 20px;
+        margin-right: 10px;
     }
     .head{
         display: flex;
@@ -43,5 +46,17 @@ export const NoteContainer = styled.div`
     }
     .delete{
         color:red;
+    }
+    .createTitle{
+        display: flex;
+        flex-direction: column;
+    }
+    .createNote span{
+        margin-left: 20px;
+        color: red;
+    }
+    .createContent{
+        display: flex;
+        flex-direction: column;
     }
 `;

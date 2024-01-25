@@ -1,6 +1,6 @@
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { RegisterContainer } from "./style";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useState } from "react";
@@ -37,7 +37,6 @@ export default function Register() {
     console.log(data);
     try {
       const response = await apiService.post(`/auth/register`, data)
-      // console.log('check' , response);
       if (response.status === 201) {  
         toast.success('Account registered successfully');
         navigate('/auth/login')

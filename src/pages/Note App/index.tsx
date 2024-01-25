@@ -1,67 +1,108 @@
-import { Button, Card, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Button, Card, MenuItem, TextField } from "@mui/material";
 import { NoteContainer } from "./style";
 import { useState } from "react";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IForm } from "./interface";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./schema";
 export default function Note() {
-  const [status, setStatus] = useState('')
-  const [form, setForm] = useState<IForm>()
-  const handleChange = (e: SelectChangeEvent) => {
-    setStatus(e.target.value);
+  const [status, setStatus] = useState('normal')
+
+  const formDefaultValues = {
+    title: '',
+    note: '',
+    status: 'normal'
   }
+
+  const getStatusBorderColor = (status:any) => {
+    switch (status) {
+      case 'normal':
+        return 'blue';
+      case 'highlight':
+        return 'green';
+      case 'important':
+        return 'red';
+      default:
+        return 'blue'; // Default color
+    }
+  }
+
+  const borderColor = getStatusBorderColor(status)
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<any>({
+    resolver: yupResolver(schema),
+    defaultValues: formDefaultValues
+  })
+
+
   const createNoteCard = () => {
 
-  }
-  const getCardClassName = () => {
-    switch (status) {
-      case '10':
-        return 'Normal';
-      case '20':
-        return 'Important';
-      case '30':
-        return 'Highlight';
-      default:
-        return '';
-    }
   }
 
   return (
     <NoteContainer>
       <div className="createNote">
         <div className="createTitle">
-          <p>Title</p>
-          <TextField className="text" />
+          <Controller
+            control={control}
+            name="title"
+            render={({ field }) =>
+              <TextField
+                className="text"
+                {...field}
+                label="Title"
+              />}
+          />
+          {errors.title && (
+            <span className="error">{errors?.title?.message?.toString()}</span>
+          )}
         </div>
         <div className="createContent">
-          <p>Note</p>
-          <TextField
-            className="text"
+          <Controller
+            control={control}
+            name="note"
+            render={({ field }) =>
+              <TextField
+                className="text"
+                {...field}
+                label="Note"
+              />}
           />
+          {errors.note && (
+            <span className="error">{errors?.note?.message?.toString()}</span>
+          )}
         </div>
         <div className="createStatus">
-          <p>Status</p>
-          <Select
-            className="select"
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="Status"
-            value={status}
-            onChange={handleChange}
-          >
-            <MenuItem value={10}>Normal</MenuItem>
-            <MenuItem value={20}>Important</MenuItem>
-            <MenuItem value={30}>Highlight</MenuItem>
-          </Select>
+          <Controller
+            control={control}
+            name="status"
+            render={({ field }) =>
+              <TextField
+              className="select"
+                {...field}
+ 
+                select // tell TextField to render select
+                label="Status"
+              >
+                <MenuItem value="normal">Normal</MenuItem>
+                <MenuItem value="important">Important</MenuItem>
+                <MenuItem value="highlight">Highlight</MenuItem>
+              </TextField>}
+          />
         </div>
         <Button
           className="CreateBtn"
           variant="outlined"
-          onClick={createNoteCard}
+          onClick={handleSubmit(createNoteCard)}
         >Create</Button>
       </div>
       <div className="note">
-        <Card className={`card${getCardClassName()}`}>
+        <Card className="card"
+        sx={{ border: `5px solid ${borderColor}`}}>
           <div className="head">
             <h3>Alo</h3>
             <div className="icon">
@@ -70,7 +111,7 @@ export default function Note() {
             </div>
           </div>
           <p>status</p>
-          <p>lorem*5</p>
+          <p>lorem*5kjkljkljkljkljkljkljkljjkljlkljkl</p>
         </Card>
       </div>
     </NoteContainer>
