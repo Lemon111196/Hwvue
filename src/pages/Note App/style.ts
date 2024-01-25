@@ -59,4 +59,17 @@ export const NoteContainer = styled.div`
         display: flex;
         flex-direction: column;
     }
+    .badge{
+        margin-left: 40px;
+    }
+    .note{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        gap: 20px 5%;
+        height: 200px;
+    }
+    .note-content{
+        overflow-wrap: break-word;
+    }
 `;

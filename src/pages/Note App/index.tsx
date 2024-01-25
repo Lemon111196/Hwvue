@@ -1,37 +1,76 @@
-import { Button, Card, MenuItem, TextField } from "@mui/material";
+import { Badge, Button, Card, MenuItem, TextField } from "@mui/material";
 import { NoteContainer } from "./style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
+import { INote } from "./interface";
+import { apiService } from "../../services";
+import { toast } from "react-toastify";
 export default function Note() {
-  const [status, setStatus] = useState('normal')
+  // const [status, setStatus] = useState('normal')
+  const [notes, setNotes] = useState<INote[]>([]);
 
   const formDefaultValues = {
     title: '',
     note: '',
-    status: 'normal'
+    status: "NORMAL",
   }
 
-  const getStatusBorderColor = (status:any) => {
+  const getStatusBorderColor = (status: any) => {
     switch (status) {
-      case 'normal':
+      case 'NORMAL':
         return 'blue';
-      case 'highlight':
+      case 'HIGHLIGHT':
         return 'green';
-      case 'important':
+      case 'IMPORTANT':
         return 'red';
       default:
-        return 'blue'; // Default color
+        return 'blue';
+    }
+  }
+  const getNoteList = async () => {
+    try {
+      const response = await apiService.get('note/list');
+      console.log(response);
+      if (response.status === 200) {
+        setNotes(response.data);
+      }
+
+    } catch (error) {
+      console.log(error);
     }
   }
 
-  const borderColor = getStatusBorderColor(status)
+  // useEffect(() => {
+  //   getNoteList();
+  // }, []);
+
+  const createNoteCard = async (data: any) => {
+    const newNote: INote = {
+      title: data.title,
+      note: data.note,
+      status: data.status,
+    };
+    try {
+      const response = await apiService.post(`note/create`, data)
+      console.log(response);
+      if (response.status === 200) {
+        toast.success("Created successfully")
+      }
+    } catch (error) {
+      toast.error('Create failed')
+    }
+    setNotes([...notes, newNote]);
+    reset(); // Clear the form after creating a note
+  };
+
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(schema),
@@ -39,9 +78,6 @@ export default function Note() {
   })
 
 
-  const createNoteCard = () => {
-
-  }
 
   return (
     <NoteContainer>
@@ -82,15 +118,15 @@ export default function Note() {
             name="status"
             render={({ field }) =>
               <TextField
-              className="select"
+                className="select"
                 {...field}
- 
+
                 select // tell TextField to render select
                 label="Status"
               >
-                <MenuItem value="normal">Normal</MenuItem>
-                <MenuItem value="important">Important</MenuItem>
-                <MenuItem value="highlight">Highlight</MenuItem>
+                <MenuItem value="NORMAL">Normal</MenuItem>
+                <MenuItem value="IMPORTANT">Important</MenuItem>
+                <MenuItem value="HIGHLIGHT">Highlight</MenuItem>
               </TextField>}
           />
         </div>
@@ -101,18 +137,19 @@ export default function Note() {
         >Create</Button>
       </div>
       <div className="note">
-        <Card className="card"
-        sx={{ border: `5px solid ${borderColor}`}}>
-          <div className="head">
-            <h3>Alo</h3>
-            <div className="icon">
-              <ModeEditOutlineIcon className="edit" />
-              <DeleteIcon className="delete" />
+        {notes.map((note, index) => (
+          <Card key={index} className="card" sx={{ border: `5px solid ${getStatusBorderColor(note.status)}` }}>
+            <div className="head">
+              <h3>{note.title}</h3>
+              <div className="icon">
+                <ModeEditOutlineIcon className="edit" />
+                <DeleteIcon className="delete" />
+              </div>
             </div>
-          </div>
-          <p>status</p>
-          <p>lorem*5kjkljkljkljkljkljkljkljjkljlkljkl</p>
-        </Card>
+            <Badge className="badge" badgeContent={`${note.status} `} color="primary" />
+            <p className="note-content">{note.note}</p>
+          </Card>
+        ))}
       </div>
     </NoteContainer>
   )

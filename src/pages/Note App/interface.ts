@@ -5,3 +5,8 @@ export interface IForm{
     content: string,
 }
 
+export interface INote{
+    title: string,
+    note: string ,
+    status: any ,
+}
