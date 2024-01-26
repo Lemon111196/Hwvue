@@ -22,13 +22,13 @@ export default function Note() {
   const getStatusBorderColor = (status: any) => {
     switch (status) {
       case 'NORMAL':
-        return 'blue';
+        return '#00BFFF';
       case 'HIGHLIGHT':
-        return 'green';
+        return '#00FF00';
       case 'IMPORTANT':
-        return 'red';
+        return '#FF3030';
       default:
-        return 'blue';
+        return '#00BFFF';
     }
   }
   const getNoteList = async () => {
@@ -47,7 +47,7 @@ export default function Note() {
   // useEffect(() => {
   //   getNoteList();
   // }, []);
-
+  //! Create a new note ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const createNoteCard = async (data: any) => {
     const newNote: INote = {
       title: data.title,
@@ -120,8 +120,7 @@ export default function Note() {
               <TextField
                 className="select"
                 {...field}
-
-                select // tell TextField to render select
+                select 
                 label="Status"
               >
                 <MenuItem value="NORMAL">Normal</MenuItem>
@@ -146,7 +145,7 @@ export default function Note() {
                 <DeleteIcon className="delete" />
               </div>
             </div>
-            <Badge className="badge" badgeContent={`${note.status} `} color="primary" />
+            <Badge className="badge" badgeContent={`${note.status} `} color="secondary" />
             <p className="note-content">{note.note}</p>
           </Card>
         ))}
