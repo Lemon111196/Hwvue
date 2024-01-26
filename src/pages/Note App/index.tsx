@@ -13,9 +13,10 @@ export default function Note() {
   // const [status, setStatus] = useState('normal')
   const [notes, setNotes] = useState<INote[]>([]);
 
+
   const formDefaultValues = {
     title: '',
-    note: '',
+    content: '',
     status: "NORMAL",
   }
 
@@ -35,36 +36,39 @@ export default function Note() {
     try {
       const response = await apiService.get('note/list');
       console.log(response);
+      console.log(notes);
       if (response.status === 200) {
-        setNotes(response.data);
+        setNotes(response.data.notes);
       }
 
     } catch (error) {
       console.log(error);
     }
+
   }
 
-  // useEffect(() => {
-  //   getNoteList();
-  // }, []);
+  useEffect(() => {
+    getNoteList();
+  }, []);
   //! Create a new note ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const createNoteCard = async (data: any) => {
     const newNote: INote = {
       title: data.title,
-      note: data.note,
+      content: data.content,
       status: data.status,
     };
+    console.log(data);
     try {
-      const response = await apiService.post(`note/create`, data)
+      const response = await apiService.post(`/note/create`, data)
       console.log(response);
       if (response.status === 200) {
         toast.success("Created successfully")
       }
+      setNotes([...notes, newNote]);
+      reset();
     } catch (error) {
       toast.error('Create failed')
     }
-    setNotes([...notes, newNote]);
-    reset(); // Clear the form after creating a note
   };
 
   const {
@@ -100,16 +104,16 @@ export default function Note() {
         <div className="createContent">
           <Controller
             control={control}
-            name="note"
+            name="content"
             render={({ field }) =>
               <TextField
                 className="text"
                 {...field}
-                label="Note"
+                label="Content"
               />}
           />
-          {errors.note && (
-            <span className="error">{errors?.note?.message?.toString()}</span>
+          {errors.content && (
+            <span className="error">{errors?.content?.message?.toString()}</span>
           )}
         </div>
         <div className="createStatus">
@@ -120,7 +124,7 @@ export default function Note() {
               <TextField
                 className="select"
                 {...field}
-                select 
+                select
                 label="Status"
               >
                 <MenuItem value="NORMAL">Normal</MenuItem>
@@ -136,17 +140,17 @@ export default function Note() {
         >Create</Button>
       </div>
       <div className="note">
-        {notes.map((note, index) => (
-          <Card key={index} className="card" sx={{ border: `5px solid ${getStatusBorderColor(note.status)}` }}>
+        {notes.map((data, index) => (
+          <Card key={index} className="card" sx={{ border: `5px solid ${getStatusBorderColor(data.status)}` }}>
             <div className="head">
-              <h3>{note.title}</h3>
+              <h3>{data.title}</h3>
               <div className="icon">
                 <ModeEditOutlineIcon className="edit" />
                 <DeleteIcon className="delete" />
               </div>
             </div>
-            <Badge className="badge" badgeContent={`${note.status} `} color="secondary" />
-            <p className="note-content">{note.note}</p>
+            <Badge className="badge" badgeContent={`${data.status} `} color="secondary" />
+            <p className="note-content">{data.content}</p>
           </Card>
         ))}
       </div>

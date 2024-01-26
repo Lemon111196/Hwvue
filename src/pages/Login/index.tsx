@@ -38,8 +38,8 @@ export default function Login() {
       const response = await apiService.post(`/auth/login`, data);
       console.log(response);
       if (response.status === 200 ) {
-        // toast.success('Account logging in successfully');
-        localStorage.setItem('token', response.data.accessToken);
+        toast.success('Account logging in successfully');
+        localStorage.setItem('accessToken', response.data.accessToken);
         navigate('/'); 
       } else {
         toast.error('Error logging in. Please try again.');

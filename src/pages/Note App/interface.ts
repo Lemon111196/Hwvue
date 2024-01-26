@@ -7,6 +7,6 @@ export interface IForm{
 
 export interface INote{
     title: string,
-    note: string ,
+    content: string ,
     status: any ,
 }

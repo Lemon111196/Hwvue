@@ -8,7 +8,7 @@ interface IRouter {
 
 export default function ProtectedRouter(props: IRouter) {
     const { component: Component } = props
-    const token = getLocal('token')
+    const token = getLocal('accessToken')
     return token? <Component/>: <Navigate to="/auth/login"/>
     
 }
