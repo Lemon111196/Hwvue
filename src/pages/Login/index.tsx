@@ -11,7 +11,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
 import { IForm } from "./interface";
-// import { IForm } from "./interface";
 
 export default function Login() {
   const formDefaultValues = {
