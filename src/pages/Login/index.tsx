@@ -13,6 +13,8 @@ import { schema } from "./schema";
 import { IForm } from "./interface";
 
 export default function Login() {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const formDefaultValues = {
     username: '',
     password: '',
@@ -34,17 +36,21 @@ export default function Login() {
   const gotoDashboard: SubmitHandler<IForm> = async (data) => {
     console.log(data);
     try {
+      setLoading(true)
       const response = await apiService.post(`/auth/login`, data);
       console.log(response);
-      if (response.status === 200 ) {
+      if (response.status === 200) {
         toast.success('Account logging in successfully');
+        // console.log(toast);
         localStorage.setItem('accessToken', response.data.accessToken);
-        navigate('/'); 
+        navigate('/');
       } else {
         toast.error('Error logging in. Please try again.');
       }
     } catch (error) {
       toast.error('Error logging in. Please try again.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -118,7 +124,10 @@ export default function Login() {
             variant="contained"
             className="btn"
             onClick={handleSubmit(gotoDashboard)}
-          >Login</Button>
+          // disable={loading}
+          // loading={loading}
+          // disabled
+          >{loading ? 'Logging in...' : 'Log in'}</Button>
         </div>
         <p className="register">Don't you have an account?<Link className="link" to='/auth/register'>Register</Link></p>
       </div>

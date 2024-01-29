@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import styled from "styled-components";
 
 export const NoteContainer = styled.div`
@@ -43,8 +44,10 @@ export const NoteContainer = styled.div`
     }
     .edit{
         color: orange;
+        cursor: pointer;
     }
     .delete{
+        cursor: pointer;
         color:red;
     }
     .createTitle{
@@ -72,4 +75,14 @@ export const NoteContainer = styled.div`
     .note-content{
         overflow-wrap: break-word;
     }
+    
+
+`;
+export const TextFieldStyle = styled(TextField)`
+    width: 460px;
+    margin: 10px;
+    .text-field-title{
+        margin-bottom: 10px;
+    }
+
 `;

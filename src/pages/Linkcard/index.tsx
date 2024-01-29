@@ -1,6 +1,9 @@
+import { LinkcardContainer } from "./style";
 
 export default function Linkcard() {
   return (
-    <div>Ali</div>
+    <LinkcardContainer>
+      <button></button>
+    </LinkcardContainer>
   )
 }
