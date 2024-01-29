@@ -14,6 +14,7 @@ export default function Note() {
   // const [status, setStatus] = useState('normal')
   const [notes, setNotes] = useState<INote[]>([]);
   const [selectedNote, setSelectedNote] = useState<INote | null>(null);
+  const [deleteNoteModal, setDeleteNoteModal] = useState<boolean>(false);
 
   const formDefaultValues = {
     title: '',
@@ -84,35 +85,10 @@ export default function Note() {
 
   //!Update a note ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//!
 
-  const updateNote = async (updateData: any) => {
-    try {
-      const response = await apiService.put(`/note/update/${updateData.id}`, updateData)
-      console.log(response);
-      getNoteList();
-      setSelectedNote(null);
-    } catch (error) {
-      toast.error('Update Failed');
-      console.log(error);
-    }
-  }
+
 
   //! Delete a note ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//!
-  const onDelete = (noteId: string) => {
-    deleteNote(noteId)
-  }
 
-  const deleteNote = async (noteId: string) => {
-    try {
-      const response = await apiService.delete(`/note/delete/${noteId}`);
-      console.log(response);
-      if (response.status === 200) {
-        toast.success('Deleted successfully')
-        getNoteList();
-      }
-    } catch (error) {
-      toast.error('Delete failed');
-    }
-  }
 
   return (
     <NoteContainer>
@@ -177,7 +153,7 @@ export default function Note() {
               <h3>{data.title}</h3>
               <div className="icon">
                 <ModeEditOutlineIcon className="edit" onClick={() => setSelectedNote(data)} />
-                <DeleteIcon className="delete" onClick = {() => onDelete(notes.id)}/>
+                <DeleteIcon className="delete" />
               </div>
             </div>
             <Badge className="badge" badgeContent={`${data.status} `} color="secondary" />
@@ -190,7 +166,7 @@ export default function Note() {
         title="Update Note"
         submitBtn="Update"
         onCancel={() => setSelectedNote(null)}
-        onSubmit={handleSubmit(() => updateNote(selectedNote))}
+        
       >
         <div className="text-field-title">
           <TextFieldStyle
@@ -213,7 +189,14 @@ export default function Note() {
           <MenuItem value="HIGHLIGHT">Highlight</MenuItem>
         </TextFieldStyle>
       </Dialog>
-
+      <Dialog
+      open={deleteNoteModal}
+      title="Delete Note"
+      submitBtn="Delete"
+      onCancel={() => setSelectedNote(null)}
+      >
+        
+      </Dialog>
     </NoteContainer>
   )
 }
