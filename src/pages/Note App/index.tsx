@@ -16,6 +16,7 @@ export default function Note() {
   const [selectedNote, setSelectedNote] = useState<INote | null>(null);
   const [deleteNoteModal, setDeleteNoteModal] = useState<boolean>(false);
 
+
   const formDefaultValues = {
     title: '',
     content: '',
@@ -52,6 +53,8 @@ export default function Note() {
   useEffect(() => {
     getNoteList();
   }, []);
+
+  
   //! Create a new note ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   const createNoteCard = async (data: any) => {

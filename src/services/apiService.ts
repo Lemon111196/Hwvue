@@ -12,8 +12,8 @@ const apiService: AxiosInstance = axios.create({
 apiService.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.headers["Accept"] = "application/json";
-    const accessToken = `Bearer ${localStorage["token"]}`;
-    if (localStorage["token"]) {
+    const accessToken = `Bearer ${localStorage["accessToken"]}`;
+    if (localStorage["accessToken"]) {
       config.headers["authorization"] = accessToken;
       // config.headers.Authorization = `Bearer ${accessToken}`;
     }

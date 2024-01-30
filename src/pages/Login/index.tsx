@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormControlLabel, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Button, Checkbox, CircularProgress, FormControlLabel, IconButton, InputAdornment, TextField } from "@mui/material";
 import { LoginContainer } from "./style";
 import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -43,14 +43,16 @@ export default function Login() {
         toast.success('Account logging in successfully');
         // console.log(toast);
         localStorage.setItem('accessToken', response.data.accessToken);
-        navigate('/');
+        setTimeout(() => {
+          setLoading(false);
+          navigate('/');
+        }, 3000)
+
       } else {
         toast.error('Error logging in. Please try again.');
       }
     } catch (error) {
       toast.error('Error logging in. Please try again.');
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -124,10 +126,8 @@ export default function Login() {
             variant="contained"
             className="btn"
             onClick={handleSubmit(gotoDashboard)}
-          // disable={loading}
-          // loading={loading}
-          // disabled
-          >{loading ? 'Logging in...' : 'Log in'}</Button>
+            disabled={loading}
+          >{loading ? <CircularProgress color="success"/> : 'Log in'}</Button>
         </div>
         <p className="register">Don't you have an account?<Link className="link" to='/auth/register'>Register</Link></p>
       </div>
