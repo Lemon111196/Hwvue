@@ -1,6 +1,6 @@
 import { Badge, Button, Card, MenuItem, TextField } from "@mui/material";
 import { NoteContainer, TextFieldStyle } from "./style";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Controller, useForm } from "react-hook-form";
@@ -53,6 +53,7 @@ export default function Note() {
     getNoteList();
   }, []);
   //! Create a new note ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   const createNoteCard = async (data: any) => {
     const newNote: INote = {
       title: data.title,
@@ -62,6 +63,7 @@ export default function Note() {
     console.log(data);
     try {
       const response = await apiService.post(`/note/create`, data)
+      // localStorage.setItem('accessToken', response.data.accessToken)
       console.log(response);
       if (response.status === 200) {
         toast.success("Created successfully")
@@ -82,6 +84,18 @@ export default function Note() {
     resolver: yupResolver(schema),
     defaultValues: formDefaultValues
   })
+
+  // !Get detail note~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//!
+
+  // const getDetail = async (id: any) => {
+  //   try{
+  //     const response = await apiService.get(`/note/detail/${id}`)
+  //     console.log(response);
+  //   }catch(error){
+  //     toast.error('Failed')
+  //     console.log(error);
+  //   }
+  // }
 
   //!Update a note ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//!
 
@@ -166,7 +180,7 @@ export default function Note() {
         title="Update Note"
         submitBtn="Update"
         onCancel={() => setSelectedNote(null)}
-        
+
       >
         <div className="text-field-title">
           <TextFieldStyle
@@ -190,12 +204,12 @@ export default function Note() {
         </TextFieldStyle>
       </Dialog>
       <Dialog
-      open={deleteNoteModal}
-      title="Delete Note"
-      submitBtn="Delete"
-      onCancel={() => setSelectedNote(null)}
+        open={deleteNoteModal}
+        title="Delete Note"
+        submitBtn="Delete"
+        onCancel={() => setSelectedNote(null)}
       >
-        
+
       </Dialog>
     </NoteContainer>
   )
