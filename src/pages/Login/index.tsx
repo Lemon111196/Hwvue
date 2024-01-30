@@ -53,6 +53,9 @@ export default function Login() {
       }
     } catch (error) {
       toast.error('Error logging in. Please try again.');
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
     }
   }
 
@@ -127,7 +130,7 @@ export default function Login() {
             className="btn"
             onClick={handleSubmit(gotoDashboard)}
             disabled={loading}
-          >{loading ? <CircularProgress color="success"/> : 'Log in'}</Button>
+          >{loading ? <CircularProgress color="success" /> : 'Log in'}</Button>
         </div>
         <p className="register">Don't you have an account?<Link className="link" to='/auth/register'>Register</Link></p>
       </div>
